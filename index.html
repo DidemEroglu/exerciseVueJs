@@ -12,33 +12,53 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg"
+    :class="navbarClasses">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">My Vue</a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li v-for="(page,index) in pages" class="nav-item">
             <a
               class="nav-link"
+              :class="{active:activePage==index}"
               aria-current="page"
               :href="page.link.url"
               :title="'This link goes to the ${page.link.text} page'"
               @click.prevent="activePage=index"
-              >{{page.link.text}}</a
-            >
+              >{{page.link.text}}</a>
           </li>
         </ul>
+        <form class="d-flex">
+          <button
+          class="btn btn-primary"
+          @click.prevent="useDarkNavbar=!useDarkNavbar"
+          >Toggle Navbar</button>
+        </form>
       </div>
     </nav>
     <div id="content" class="container">
       <h1>{{pages[activePage].pageTitle}}</h1>
       <p>{{pages[activePage].content}}</p>
     </div>
-
     <script>
       Vue.createApp({
+        computed: {
+            navbarClasses(){
+              return {
+              'navbar-light':!this.useDarkNavbar,
+              'bg-light': !this.useDarkNavbar,
+              'navbar-dark':this.useDarkNavbar,
+              'bg-dark':this.useDarkNavbar
+              }
+            }
+        },
         data() {
           return {
             activePage: 0,
+            useDarkNavbar: false,
+            navbarClasses: {
+              
+            },
             pages: [
               {
                 link: {
